@@ -2,6 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Zlib-Src-Path>$(SolutionDir)\..\</Zlib-Src-Path>	
-    <WindowsSDKVersion>8.1</WindowsSDKVersion>
+    <WindowsSDKVersion>10</WindowsSDKVersion>
   </PropertyGroup>
 </Project>
