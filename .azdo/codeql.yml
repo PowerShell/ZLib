@@ -28,7 +28,7 @@ stages:
     
     - pwsh: |
         Write-Verbose "Starting the build configuration:Release Platform:x64"
-        $buildLogPath = Join-Path $repolocation "build\build_x64_Release.log"
+        $buildLogPath = "$(Build.SourcesDirectory)\build\build_x64_Release.log"
         & 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe' "$(Build.SourcesDirectory)/build/ZLib.sln" /p:Configuration=Release /p:Platform=x64 /m /noconlog /fl /flp:LogFile=$buildLogPath
       displayName: Build ZLib
 
