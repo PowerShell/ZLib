@@ -21,7 +21,8 @@ stages:
       - ImageOverride -equals PSMMS2022-OpenSSH-Secure
     variables:
       Codeql.Enabled: true
-      Codeql.Cadence: 23 # hours
+      Codeql.Cadence: 1 # hour (for testing, normally will run daily)
+      skipComponentGovernanceDetection: true # not needed for CodeQL run
     steps:
     - task: CodeQL3000Init@0
       displayName: Initialize CodeQL
