@@ -1,0 +1,42 @@
+name: $(BuildDefinitionName)-$(date:yyMM).$(date:dd)$(rev:rrr)
+
+trigger: none
+
+schedules:
+- cron: "0 10 * * 1-5"
+  displayName: Daily CodeQL Build
+  branches:
+    include:
+    - master
+
+stages:
+- stage: Build
+  displayName: Build ZLib
+  jobs:
+  - job: BuildPkg
+    displayName: Build Package
+    pool:
+      name: PS-PowerShell-x64
+      demands:
+      - ImageOverride -equals PSMMS2022-OpenSSH-Secure
+    variables:
+      Codeql.Enabled: true
+      Codeql.Cadence: 23 # hours
+    steps:
+    - task: CodeQL3000Init@0
+      displayName: Initialize CodeQL
+    
+    - pwsh: |
+        Write-Verbose "Starting the build configuration:Release Platform:x64"
+        $buildLogPath = Join-Path $repolocation "build\build_x64_Release.log"
+        & 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe' "$(Build.SourcesDirectory)/build/ZLib.sln" /p:Configuration=Release /p:Platform=x64 /m /noconlog /fl /flp:LogFile=$buildLogPath
+      displayName: Build ZLib
+
+    - task: CodeQL3000Finalize@0
+      displayName: Finalize CodeQL
+
+    - pwsh: |
+        $BuildOutPath = "$(Build.SourcesDirectory)/build/bin"
+        $BuildOutx64Path = Join-Path -Path $BuildOutPath -ChildPath 'x64/Release'
+        Get-ChildItem -Path $BuildOutx64Path
+      displayName: Capture build results
