@@ -22,6 +22,7 @@ stages:
     variables:
       Codeql.Enabled: true
       Codeql.Cadence: 1 # hour (for testing, normally will run daily)
+      Codeql.Language: 'cpp'
       skipComponentGovernanceDetection: true # not needed for CodeQL run
     steps:
     - task: CodeQL3000Init@0
