@@ -3,11 +3,12 @@ name: $(BuildDefinitionName)-$(date:yyMM).$(date:dd)$(rev:rrr)
 trigger: none
 
 schedules:
-- cron: "0 10 * * 1-5"
-  displayName: Daily CodeQL Build
+- cron: "0 10 * * 1"
+  displayName: Weekly CodeQL Build
   branches:
     include:
     - master
+  always: true # should run even if there are no new commits
 
 stages:
 - stage: Build
@@ -27,7 +28,7 @@ stages:
     steps:
     - task: CodeQL3000Init@0
       displayName: Initialize CodeQL
-    
+
     - pwsh: |
         Write-Verbose "Starting the build configuration:Release Platform:x64"
         $buildLogPath = "$(Build.SourcesDirectory)\build\build_x64_Release.log"
